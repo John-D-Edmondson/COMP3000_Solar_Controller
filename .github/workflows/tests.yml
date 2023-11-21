@@ -22,16 +22,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     
-    - name: Set working directory
-      run: cd ..
-
-
-    - name: Install dependencies
-      run: npm install
-      working-directory: nodeServer/app
-
-    - name: Build the application (if needed)
-      run: npm run build
-
-    - name: Run mock tests
-      run: npm run testMock
+    - name: Install dependencies and run tests
+      run: |
+        cd nodeServer/app 
+        npm install
+        npm run build
+        npm run testMock
