@@ -17,5 +17,6 @@ jobs:
         with:
           node-version: '18.x'
       - run: npm install
+        working-directory: ./nodeserver/app
       - run: npm run build --if-present
       - run: npm testMock
