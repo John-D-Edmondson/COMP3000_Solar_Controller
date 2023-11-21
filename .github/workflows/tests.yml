@@ -23,8 +23,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     
     - name: Install dependencies and run tests
-      run: |
-        cd nodeServer/app 
+      run: | 
         npm install
         npm run build
         npm run testMock
