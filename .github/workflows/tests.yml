@@ -23,12 +23,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
     
     
-    - name: Set working directory
-      run: cd COMP3000_Solar_Controller/nodeServer/app
-      
+
+
     - name: Install dependencies
       run: npm install
-      working-directory: COMP3000_Solar_Controller/nodeServer/app
+      working-directory: nodeServer/app
 
     - name: Build the application (if needed)
       run: npm run build
