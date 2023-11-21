@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./tests/APItest.js --timeout 5000"
+    "test": "mocha ./tests/APItest.js --timeout 5000",
+    "testLive": "cross-env NODE_ENV=live mocha ./tests/APItest.js --timeout 5000",
+    "testMock": "cross-env NODE_ENV=mock mocha ./tests/APItest.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +19,7 @@
   },
   "devDependencies": {
     "chai": "^4.3.10",
-    "chai-http": "^4.4.0"
+    "chai-http": "^4.4.0",
+    "cross-env": "^7.0.3"
   }
 }

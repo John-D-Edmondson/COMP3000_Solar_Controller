@@ -3,7 +3,7 @@ let express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const suncalc = require('suncalc');
-const SolarPanel = require('./SolarPanel');
+const { getSolarPanelByApiKey } = process.env.NODE_ENV === 'mock' ? require('./tests/mockedData') : require('./SolarPanel');
 
 
 
@@ -32,7 +32,7 @@ app.post('/calculate-ideal-angle', async (req, res) => {
     console.log(apiKey);
     
     try {
-      const solarPanel = await SolarPanel.findOne({ apiKey });
+      const solarPanel = await getSolarPanelByApiKey(apiKey);
   
       if (!solarPanel) {
         return res.status(404).json({ error: 'Solar panel not found' });
@@ -45,9 +45,7 @@ app.post('/calculate-ideal-angle', async (req, res) => {
       const adjustedAltitude = altitude * (180/Math.PI);
       const adjustedAzimuth = (azimuth * (180 / Math.PI) + 180) % 360;
       res.json({ elevation: adjustedAltitude, azimuth: adjustedAzimuth });
-
-
-  
+      
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
