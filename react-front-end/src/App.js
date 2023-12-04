@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AppNavbar from './Components/AppNavbar';
 import Home from './Pages/Home';
 import About from './Pages/About';
+import Register from './Pages/Register';
+import Login from './Pages/Login';
 
 
 function App() {
@@ -12,11 +14,15 @@ function App() {
     <Router>
       <div>
         <AppNavbar />
-        <Routes>
-          <Route path="/" exact component={Home} />
-          <Route path="/about" component={About} />
-          {/* Add more routes as needed */}
-        </Routes>
+        <div className="content-container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            {/* Add more routes as needed */}
+          </Routes>
+        </div>
       </div>
     </Router>
   );

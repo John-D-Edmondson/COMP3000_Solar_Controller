@@ -28,6 +28,11 @@
   color: #61dafb;
 }
 
+.content-container {
+  margin-top: 60px; /* Adjust this value based on your navbar height */
+  padding: 20px;   /* Optional: Add some padding to the content */
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
