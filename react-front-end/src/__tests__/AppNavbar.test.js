@@ -2,7 +2,6 @@ import { BrowserRouter as Router } from 'react-router-dom'; // Import BrowserRou
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { act } from 'react-dom/test-utils'; // Import act from 'react-dom/test-utils'
 import AppNavbar from '../Components/AppNavbar';
 import '@testing-library/jest-dom/extend-expect'; // Import the library
 
@@ -78,3 +77,5 @@ test('navigates to Home when Home link is clicked', () => {
     // Expect that the component has navigated to the Home route
     expect(mockNavigate).toHaveBeenCalledWith("/login", {"replace": false, "state": undefined});
   });
+
+  
