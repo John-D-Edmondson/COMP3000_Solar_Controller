@@ -23,7 +23,10 @@ const AppNavbar = () => {
               </LinkContainer>
               <LinkContainer to="/register">
                 <Nav.Link>Register</Nav.Link>
-              </LinkContainer>    
+              </LinkContainer>
+              <LinkContainer to="/manage">
+                <Nav.Link>Manage</Nav.Link>
+              </LinkContainer>   
             </Nav>
         </Navbar.Collapse>
       </Container>

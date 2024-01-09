@@ -98,7 +98,7 @@ const Register = () => {
   <button 
     className="btn btn-lg btn-primary btn-block" 
     onClick={handleSubmit}
-    >Sign in</button>
+    >Register</button>
 </form>
   );
 };

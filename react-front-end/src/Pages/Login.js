@@ -1,9 +1,10 @@
 // Home.js
 import React, { useState } from 'react';
 import '../styles/LoginCSS.css'
-
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState({
     email:'',
     password: ''
@@ -20,6 +21,11 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(userDetails);
+    navigate('/manage', {replace:true});
+  }
+
+  const handleRegisterHere = () =>{
+    navigate('/register', {replace:true});
   }
 
   return (
@@ -56,7 +62,12 @@ const Login = () => {
         className="btn btn-lg btn-primary btn-block" 
         onClick={handleSubmit}
         >Sign in</button>
+      <button 
+        className="btn btn-lg btn-primary btn-block" 
+        onClick={handleRegisterHere}
+        >Register Here</button>
     </form>
+    
 
   );
 };
