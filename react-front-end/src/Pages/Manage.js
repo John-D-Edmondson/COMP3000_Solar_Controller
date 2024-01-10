@@ -2,10 +2,17 @@
 import React, { useState } from 'react';
 import AddSolarPanelForm from '../Components/AddSolarPanelForm';
 import UpdateDetailsForm from '../Components/UpdateDetailsForm';
+import SolarPanelTable from '../Components/SolarPanelTable';
 import '../CSS/Manage.css';
 
 
 const Manage = () => {
+
+    //test data for sense check - will be from DB later
+    const panelsData = [
+        { id: '1', longitude: '12.34', latitude: '56.78' },
+        { id: '2', longitude: '23.45', latitude: '67.89' },
+    ];
 
     const [showSolarForm, setShowSolarForm] = useState(false);
     const [showUpdateDetailsForm, setShowUpdateDetailsForm] = useState(false);
@@ -18,7 +25,6 @@ const Manage = () => {
         setShowUpdateDetailsForm(true);
     }
 
-
     const handleFormSubmit = (formData) => {
         console.log(formData); // Handle the form data as required
         setShowSolarForm(false); // Hide the form after submission
@@ -26,13 +32,25 @@ const Manage = () => {
 
 
     const handleDeleteMyDetails = () => {
-
+      const areYouSure = window.confirm("If you delete your record, all solar panels will be removed\nPress OK to delete or Cancel.");
+      if (areYouSure){
+        // handle delete registration
+        console.log('deleting record');
+      } else {
+        console.log('user cancelled deletion');
+      }
     }
 
     const handleCloseForm = () => {
         setShowSolarForm(false);
         setShowUpdateDetailsForm(false);
       };
+
+      
+    const handleUpdatePanel = (panelId) => {
+      // Your update logic here
+      console.log(`Updating panel with ID: ${panelId}`);
+  }
     
 
 
@@ -40,10 +58,8 @@ const Manage = () => {
     <div>
       <h2>Manage</h2>
       <p>First Name + Last name</p>
-      <ul>
-        <li>Solar panel 1</li><button className="btn btn-secondary">Change location</button>
-        <li>Solar panel 2</li><button className="btn btn-secondary">Change location</button>
-      </ul>
+      <SolarPanelTable panels={panelsData} onUpdatePanel={handleUpdatePanel} />
+      
 
       {showSolarForm && (
         <div className="overlay" onClick={handleCloseForm}>
