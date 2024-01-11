@@ -2,14 +2,14 @@ import React from 'react';
 import '../CSS/SolarPanelTableCSS.css'
 
 
-const SolarPanelTable = ({ panels, onUpdatePanel }) => {
+const SolarPanelTable = ({ panels, onUpdatePanel, onDeletePanel }) => {
 
     if (panels.length === 0) {
         return <p>No Solar panels registered to user.</p>;
     }
 
     return (
-        <table>
+        <table className="panel-table">
             <thead>
                 <tr>
                     <th>Solar Panel ID</th>
@@ -24,7 +24,10 @@ const SolarPanelTable = ({ panels, onUpdatePanel }) => {
                         <td>{panel.id}</td>
                         <td>{panel.longitude}</td>
                         <td>{panel.latitude}</td>
-                        <td><button className='btn btn-primary' onClick={() => onUpdatePanel(panel.id)}>Update</button></td>
+                        <td>
+                            <button className='btn btn-primary' onClick={() => onUpdatePanel(panel)}>Update</button>
+                            <button className='btn btn-danger' onClick={() => onDeletePanel(panel)}>Delete</button>
+                        </td>
                     </tr>
                 ))}
             </tbody>

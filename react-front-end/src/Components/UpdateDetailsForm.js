@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
+import { isAtLeastTwoLetter, isValidEmail } from '../helper/regex';
 
-const UpdateDetailsForm = ({ onSubmit, onCancel }) => {
+
+const UpdateDetailsForm = ({ userDetails, onSubmit, onCancel }) => {
+
+  const [validFirstName, setValidFirstName] = useState(true);
+  const [validLastname, setValidLastName] = useState(true);
+  const [validEmail, setValidEmail] = useState(true);
+
   const [formData, setFormData] = useState({
-    firstName:'',
-    lastName:'',
-    email:'',
+    firstName: userDetails.firstName,
+    lastName: userDetails.lastName,
+    email: userDetails.email,
+    userID: userDetails.userID
   });
 
   const handleInputChange = (e) => {
@@ -13,10 +21,29 @@ const UpdateDetailsForm = ({ onSubmit, onCancel }) => {
       ...prevData,
       [name]: value,
     }));
+    setValidEmail(true);
+    setValidFirstName(true);
+    setValidLastName(true);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    let validForm = true;
+    if(!isAtLeastTwoLetter(formData.firstName)){
+      setValidFirstName(false);
+      validForm = false;
+    }
+    if(!isAtLeastTwoLetter(formData.lastName)){
+      setValidLastName(false);
+      validForm = false;
+    }
+    if(!isValidEmail(formData.email)){
+      setValidEmail(false);
+      validForm = false;
+    }
+    if(!validForm) return;
+
     onSubmit(formData);
     setFormData({
         firstName:'',
@@ -49,6 +76,7 @@ const UpdateDetailsForm = ({ onSubmit, onCancel }) => {
           onChange={handleInputChange} 
           />
         <label htmlFor="inputFirstName">First Name</label>
+        {!validFirstName && <p style={{ color: 'red' }}>Letters only, at least two</p>}
       </div>
       <div className="form-label-group">
         <input 
@@ -61,8 +89,8 @@ const UpdateDetailsForm = ({ onSubmit, onCancel }) => {
           value={formData.lastName}
           onChange={handleInputChange} 
           />
-          
         <label htmlFor="inputLastName">Last Name</label>
+        {!validLastname && <p style={{ color: 'red' }}>Letters only, at least two</p>}
       </div>
       <div className="form-label-group">
         <input 
@@ -76,6 +104,7 @@ const UpdateDetailsForm = ({ onSubmit, onCancel }) => {
           onChange={handleInputChange} 
           />    
         <label htmlFor="inputEmail">Email address</label>
+        {!validEmail && <p style={{ color: 'red' }}>Valid email required</p>}
       </div>
       <button className="btn btn-primary" type="submit">Update</button>
       <button className="btn btn-danger" type="button" onClick={handleCancel}>Cancel</button>

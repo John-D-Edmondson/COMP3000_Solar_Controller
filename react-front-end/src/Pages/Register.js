@@ -1,8 +1,20 @@
 // Register.js page
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { isValidPassword, isAtLeastTwoLetter, isValidEmail } from '../helper/regex';
 
 const Register = () => {
-  const [userDetails, setUserDetails] = useState({
+  const navigate = useNavigate();
+
+  const [validPassword, setValidPassword] = useState(true);
+  const [validMatchPassword, setValidMatchPassword] = useState(true);
+  const [validFirstName, setValidFirstName] = useState(true);
+  const [validLastname, setValidLastName] = useState(true);
+  const [validEmail, setValidEmail] = useState(true);
+
+
+  
+  const [formData, setFormData] = useState({
     firstName:'',
     lastName:'',
     email:'',
@@ -12,7 +24,7 @@ const Register = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUserDetails((prevDetails) => ({
+    setFormData((prevDetails) => ({
       ...prevDetails,
       [name] : value
     }));
@@ -20,8 +32,34 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(userDetails);
+    let validForm = true;
+    if(!isAtLeastTwoLetter(formData.firstName)){
+      setValidFirstName(false);
+      validForm = false;
+    }
+    if(!isAtLeastTwoLetter(formData.lastName)){
+      setValidLastName(false);
+      validForm = false;
+    }
+    if(!isValidEmail(formData.email)){
+      setValidEmail(false);
+      validForm = false;
+    }
+    if(!isValidPassword(formData.password)){
+      setValidPassword(false);
+      validForm = false;
+    }
+    if(formData.password !== formData.passwordRetype){
+      setValidMatchPassword(false);
+      validForm = false;
+    }
+    
+    if(!validForm) return;
 
+
+    console.log(`creating new user /n${formData}`);
+
+    navigate('/login', {replace:true});
   }
 
 
@@ -37,10 +75,11 @@ const Register = () => {
           placeholder="First Name" 
           required autoFocus
           name='firstName'
-          value={userDetails.firstName}
+          value={formData.firstName}
           onChange={handleInputChange} 
           />
         <label htmlFor="inputFirstName">First Name</label>
+        {!validFirstName && <p style={{ color: 'red' }}>Letters only, at least two</p>}
       </div>
       <div className="form-label-group">
         <input 
@@ -50,11 +89,11 @@ const Register = () => {
           placeholder="Last Name" 
           required 
           name='lastName'
-          value={userDetails.lastName}
+          value={formData.lastName}
           onChange={handleInputChange} 
           />
-          
         <label htmlFor="inputLastName">Last Name</label>
+        {!validLastname && <p style={{ color: 'red' }}>Letters only, at least two</p>}
       </div>
       <div className="form-label-group">
         <input 
@@ -64,10 +103,11 @@ const Register = () => {
           placeholder="Email address" 
           required 
           name='email'
-          value={userDetails.email}
+          value={formData.email}
           onChange={handleInputChange} 
           />    
         <label htmlFor="inputEmail">Email address</label>
+        {!validEmail && <p style={{ color: 'red' }}>Enter valid email</p>}
       </div>
       <div className="form-label-group">
         <input 
@@ -77,10 +117,11 @@ const Register = () => {
           placeholder="Password" 
           required
           name='password'
-          value={userDetails.password}
+          value={formData.password}
           onChange={handleInputChange}
           />
         <label htmlFor="inputPassword">Password</label>
+        {!validPassword && <p style={{ color: 'red' }}>Must be 8 characters and include capital and number.</p>}
       </div>
       <div className="form-label-group">
         <input 
@@ -90,10 +131,11 @@ const Register = () => {
           placeholder="Retype Password" 
           required
           name='passwordRetype'
-          value={userDetails.passwordRetype}
+          value={formData.passwordRetype}
           onChange={handleInputChange}
           />
         <label htmlFor="inputPasswordRetype">Retype Password</label>
+        {!validMatchPassword && <p style={{ color: 'red' }}>Must be 8 characters and include capital and number.</p>}
       </div>
   <button 
     className="btn btn-lg btn-primary btn-block" 

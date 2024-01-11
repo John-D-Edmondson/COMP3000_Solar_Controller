@@ -10,7 +10,23 @@ th, td {
 th {
     background-color: #f2f2f2;
 }
-button {
-    padding: 5px 10px;
-    cursor: pointer;
+.panel-table button {
+    width: calc(50% - 2px); /* Each button takes 50% width minus 2px for the gap */
+    box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+.panel-table button:first-child {
+    margin-right: 4px; /* Right margin for the first button to create a gap */
+}
+
+/* Media query for screens smaller than 768px (common breakpoint for mobile devices) */
+@media (max-width: 767px) {
+    .panel-table button {
+        width: 100%; /* Each button takes 100% width on smaller screens */
+        margin: 4px 0; /* Add some vertical margin for spacing */
+    }
+
+    .panel-table button:first-child {
+        margin-right: 0; /* Remove right margin on the first button */
+    }
 }
