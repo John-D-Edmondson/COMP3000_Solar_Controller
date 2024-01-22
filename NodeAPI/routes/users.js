@@ -1,5 +1,5 @@
 var express = require('express');
-const { usersGetAll, usersGetOne, usersCreateOne, usersDeleteOne, usersUpdateOne } = require('../services/usersService');
+const { usersGetAll, usersGetOne, usersCreateOne, usersDeleteOne, usersUpdateOne, usersAddPanel, usersRemovePanel } = require('../services/usersService');
 var router = express.Router();
 
 
@@ -46,20 +46,20 @@ router.post('/', async function(req, res, next){
    const userData = req.body;
    try {
     const result = await usersCreateOne(userData);
-
     if (result.code === 11000) {
       // Handle specific error (e.g., duplicate key violation)
       res.status(400).json({ error: "existing email" });
     } else if (result.code === 1) {
       res.status(500).send({error: 'Internal Server Error'});
     } else if (result.code === 4) {
-      res.status(400).send({error: "data failed validation"});
+      res.status(400).send({error: result.message});
     } else {
       // no errors send _id
       res.status(201).json({ _id: result });
     }
 
    } catch (error) {
+  
     
     res.status(500).send('Internal Server Error');
    }
@@ -75,6 +75,8 @@ router.post('/', async function(req, res, next){
       res.status(404).send({error: 'no user found'});
     } else if (result.code === 3) {
       res.status(400).send({error: "invald ID"});
+    } else if (result.code === 4) {
+      res.status(400).send({error: result.message});
     } else {
       res.status(200).json(result);
     }
@@ -105,5 +107,42 @@ router.delete('/:id', async function(req, res, next){
   }
 })
 
+
+router.put('/addpanel/:id', async function (req, res, next){
+  
+  const userId = req.params.id;
+  const panels = req.body;
+  console.log(userId);
+  console.log(panels);
+  try {
+    const result = await usersAddPanel(userId, panels);
+    if (result.success){
+      res.status(200).send(result.success);
+    } else if (result.error){
+      res.status(404).send(result.error)
+    }
+  } catch (error){
+    console.log(error);
+    res.status(500).send('Internal Server Error');
+  }
+})
+
+router.put('/removepanel/:id', async function(req, res, next){
+  const userId = req.params.id;
+  const panels = req.body;
+  console.log(userId);
+  console.log(panels);
+  try {
+    const result = await usersRemovePanel(userId, panels);
+    if (result.success){
+      res.status(200).send(result.success);
+    } else if (result.error){
+      res.status(404).send(result.error)
+    }
+  } catch (error){
+    console.log(error);
+    res.status(500).send('Internal Server Error');
+  }
+})
 
 module.exports = router;

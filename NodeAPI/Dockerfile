@@ -1,6 +1,6 @@
 FROM node:lts-alpine
 ENV NODE_ENV=production
-ENV MONGOCODE=111111111
+ENV MONGODB_URI=mongodb+srv://johnedmondson83:Password@cluster0.zliwnea.mongodb.net/SolarTilt
 WORKDIR /usr/src/app
 COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
 RUN npm install --production --silent && mv node_modules ../

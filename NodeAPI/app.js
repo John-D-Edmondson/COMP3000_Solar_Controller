@@ -8,8 +8,16 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var panelsRouter = require('./routes/panels');
 const connectToMongoDB = require('./DBConnection/MongoDBConnect');
+const cors = require('cors');
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 
 var app = express();
+
+// enable http connection when in development
+if (isDevelopment) {
+  app.use(cors());
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
