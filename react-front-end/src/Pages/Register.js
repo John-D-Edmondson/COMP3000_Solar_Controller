@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isValidPassword, isAtLeastTwoLetter, isValidEmail } from '../helper/regex';
+import userService from '../services/userService';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let validForm = true;
     if(!isAtLeastTwoLetter(formData.firstName)){
@@ -54,12 +55,19 @@ const Register = () => {
       validForm = false;
     }
     
-    if(!validForm) return;
+    if(!validForm){ return} else {
+      try {
+        const resultRegisterUser = await userService.userRegister(formData);
+        console.log(`creating new user /n${formData}`);
+        console.log(resultRegisterUser);
+        navigate('/login', {replace:true});
+        localStorage.setItem('userId', resultRegisterUser._id )
+      } catch (error) {
+        console.log(error);
+      }
+      
+    };
 
-
-    console.log(`creating new user /n${formData}`);
-
-    navigate('/login', {replace:true});
   }
 
 

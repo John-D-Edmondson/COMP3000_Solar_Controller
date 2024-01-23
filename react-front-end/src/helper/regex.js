@@ -11,7 +11,6 @@ export const isValidPassword = (password) => {
 
 export const isAtLeastTwoLetter = (text) => {
   const atLeastTwoLetterRegex = /^[^\d\W_]*[a-zA-Z][^\d\W_]*[a-zA-Z][^\d\W_]*$/;
-  console.log (atLeastTwoLetterRegex.test(text));
   return atLeastTwoLetterRegex.test(text);
 }
 

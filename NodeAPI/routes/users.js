@@ -1,13 +1,17 @@
 var express = require('express');
 const { usersGetAll, usersGetOne, usersCreateOne, usersDeleteOne, usersUpdateOne, usersAddPanel, usersRemovePanel } = require('../services/usersService');
+const User = require('../models/userModel');
 var router = express.Router();
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const  verifyToken  = require('../middleware/authoriseMiddleware');
+require('dotenv').config(); 
 
 
 /* GET ALL USERS */
-router.get('/', async function(req, res, next) {
+router.get('/', verifyToken, async function(req, res, next) {
   try {
     const result = await usersGetAll();
-
     if (result.code === 1) {
       res.status(500).send({error: 'Internal server error'});
     } else {
@@ -143,6 +147,43 @@ router.put('/removepanel/:id', async function(req, res, next){
     console.log(error);
     res.status(500).send('Internal Server Error');
   }
+})
+
+router.post('/login', async function(req, res, next) {
+  const { email, password } = req.body;
+  // Find user by email
+  try {
+    const user = await User.findOne({ 'email': email });
+
+      // Check if user exists and password is correct
+    if (user && await bcrypt.compare(password, user.password)) {
+      // Generate a JWT
+      console.log(process.env.JWT_SECRET);
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      console.log(token);
+
+      res.cookie('token', token, { httpOnly: true });
+
+      res.status(200).json({message: 'Successful login'});
+
+    } else {
+      res.status(401).json({ message: 'Invalid credentials' });
+    }
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+
+});
+
+router.get('/manage/nanage', verifyToken, async function (req, res, next){
+    const userId = req.userId;
+    console.log(userId);
+    try {
+      const user = await usersGetOne(userId);
+      res.status(200).json({userId})
+    } catch (error){
+      res.status(500).send('Internal Server error');
+    }
 })
 
 module.exports = router;
