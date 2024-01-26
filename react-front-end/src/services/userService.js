@@ -27,6 +27,59 @@ const userService = {
       throw error;
     }
   },
+  userLogin: async (formData) => {
+    try {
+      const response = await fetch(`${BASE_URL}/users/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+        credentials: "include",
+      });
+
+      if (response.status === 200) {
+        // Parse the JSON body of the response
+        const responseData = await response.json();
+  
+        // Return an object containing the status and data
+        return {
+          success: true,
+          data: responseData,
+        };
+      } else {
+        return {
+          success: false,
+          data: await response.text()
+        }
+      }
+      
+    } catch (error) {
+      console.error('Error during login:', error.message);
+      return(error); 
+     
+    }
+  },
+  userManage: async (userId) => {
+    try {
+      const response = await fetch(`${BASE_URL}/users/manage/nanage`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: "include",
+      });
+      if (response.status === 200) {
+        const userData = await response.json();
+        return userData;
+      } else {
+        return (response.message);
+      }
+    } catch(error) {
+      console.log(`error getting user details: ${error.message}`);
+    }
+  },
+
 //   userUpdateDetails: async (formData) => {
 
 //     try {

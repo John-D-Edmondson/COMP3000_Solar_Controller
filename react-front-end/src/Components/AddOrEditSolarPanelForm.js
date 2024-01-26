@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import { isValidLatitude, isValidLongitude } from '../helper/regex';
 
 const AddOrEditSolarPanelForm = ({ existingPanel= {}, onSubmit, onCancel }) => {
-
-  const isEditMode = !!existingPanel.id;
+ 
   const [validLatitude, setValidLatitude] = useState(true);
   const [validLongitude, setvalidLongitude] = useState(true);
 
 
   const [formData, setFormData] = useState({
-    id: isEditMode ? existingPanel.id : '',
-    longitude: isEditMode ? existingPanel.longitude : '',
-    latitude: isEditMode ? existingPanel.latitude : '',
+    _id:  existingPanel._id,
+    longitude: existingPanel.longitude,
+    latitude: existingPanel.latitude, 
   });
 
   const handleChange = (e) => {
@@ -72,9 +71,9 @@ const AddOrEditSolarPanelForm = ({ existingPanel= {}, onSubmit, onCancel }) => {
           className='form-control'
           type="text" 
           name="id" 
-          value={formData.id}
+          value={formData._id}
           onChange={handleChange}
-          disabled={isEditMode} // Disable if in edit mode
+          disabled
           required 
         />
       </div>
@@ -107,7 +106,7 @@ const AddOrEditSolarPanelForm = ({ existingPanel= {}, onSubmit, onCancel }) => {
         />
          {!validLatitude && <p style={{ color: 'red' }}>Must be in format of XX.XX between -90 to 90</p>}
       </div>
-      <button className="btn btn-primary" type="submit">{isEditMode ? 'Update' : 'Add' }</button>
+      <button className="btn btn-primary" type="submit">Update</button>
       <button className="btn btn-danger" type="button" onClick={handleCancel}>Cancel</button>
     </form>
   );

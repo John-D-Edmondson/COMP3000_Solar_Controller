@@ -4,7 +4,8 @@ const User = require('../models/userModel');
 var router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const  verifyToken  = require('../middleware/authoriseMiddleware');
+const { verifyToken, verifyCorrectUserId } = require('../middleware/authoriseMiddleware');
+
 require('dotenv').config(); 
 
 
@@ -121,9 +122,9 @@ router.put('/addpanel/:id', async function (req, res, next){
   try {
     const result = await usersAddPanel(userId, panels);
     if (result.success){
-      res.status(200).send(result.success);
+      res.status(200).json(result);
     } else if (result.error){
-      res.status(404).send(result.error)
+      res.status(404).json(result)
     }
   } catch (error){
     console.log(error);
@@ -159,12 +160,12 @@ router.post('/login', async function(req, res, next) {
     if (user && await bcrypt.compare(password, user.password)) {
       // Generate a JWT
       console.log(process.env.JWT_SECRET);
-      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
       console.log(token);
 
       res.cookie('token', token, { httpOnly: true });
 
-      res.status(200).json({message: 'Successful login'});
+      res.status(200).json({message: 'Successful login', userId: user._id});
 
     } else {
       res.status(401).json({ message: 'Invalid credentials' });
@@ -180,7 +181,7 @@ router.get('/manage/nanage', verifyToken, async function (req, res, next){
     console.log(userId);
     try {
       const user = await usersGetOne(userId);
-      res.status(200).json({userId})
+      res.status(200).json(user);
     } catch (error){
       res.status(500).send('Internal Server error');
     }

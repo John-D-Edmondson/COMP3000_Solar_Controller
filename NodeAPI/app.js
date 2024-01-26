@@ -14,11 +14,12 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 
 var app = express();
 
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 // enable http connection when in development
-if (isDevelopment) {
-  app.use(cors());
-}
-
+// if (isDevelopment) {
+//   app.use(cors());
+// }
+// app.options('*', cors())
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

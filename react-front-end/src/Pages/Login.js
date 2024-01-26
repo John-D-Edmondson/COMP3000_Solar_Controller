@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import '../styles/LoginCSS.css'
 import { useNavigate } from 'react-router-dom';
+import userService from '../services/userService';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ const Login = () => {
     email:'',
     password: ''
   });
+  const [successfulLogin, setSuccessfulLogin] = useState(true);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -18,10 +20,25 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(userDetails);
-    navigate('/manage', {replace:true});
+
+    try {
+      const resultLogin = await userService.userLogin(userDetails);
+      console.log(resultLogin);
+      if(resultLogin.success) {
+        navigate(`/manage/`);
+      } else {
+        setSuccessfulLogin(false);
+      }
+
+      
+
+    } catch (error) {
+        console.log(`error logging in: ${error}`);
+    }
+    
   }
 
   const handleRegisterHere = () =>{
@@ -29,6 +46,7 @@ const Login = () => {
   }
 
   return (
+    <>
   
       <form className="form-signin">
         <p>LOGIN</p>
@@ -66,7 +84,10 @@ const Login = () => {
         className="btn btn-lg btn-primary btn-block" 
         onClick={handleRegisterHere}
         >Register Here</button>
+        {!successfulLogin && <p style={{ color: 'red' }}>Unsuccessful, please try again</p>}
     </form>
+    
+ </>
     
 
   );

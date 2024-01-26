@@ -4,9 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
     const token = req.cookies.token; // Assuming you're using cookies
-    console.log(token);
-    console.log(process.env.JWT_SECRET);
-  
+    console.log(`token in request: ${token}`);
     if (!token) {
       return res.status(401).json({ message: 'Unauthorized - No token provided' });
     }
@@ -22,4 +20,12 @@ const verifyToken = (req, res, next) => {
     }
   };
 
-  module.exports = verifyToken;
+const verifyCorrectUserId = (req, res, next) => {
+    const urlUserId = req.params.id; // Assuming the userId is in the URL parameters
+    if (req.userId !== urlUserId) {
+      return res.status(403).json({ message: 'Forbidden - You do not have access to this resource' });
+    }
+    next();
+  };
+
+  module.exports = {verifyToken, verifyCorrectUserId};

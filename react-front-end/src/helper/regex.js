@@ -26,3 +26,10 @@ export const isValidLongitude = (longitude) => {
   console.log(longitudeRegex.test(longitude))
   return longitudeRegex.test(longitude);
 }
+
+export const isValidPanelId = (panelId) => {
+    // MongoDB _id is a 24-character hexadecimal string
+    const idRegex = /^[0-9a-fA-F]{24}$/;
+    console.log(idRegex.test(panelId))
+    return idRegex.test(panelId);
+}

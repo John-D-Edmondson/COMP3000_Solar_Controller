@@ -85,9 +85,16 @@ const usersUpdateOne = async (_id, userData, session) => {
     console.log(_id);
     const updatedUser = await User.findOneAndUpdate(
       { _id },
-      { $set: userData },
+      {
+        $set: {
+          firstName: userData.firstName, // Update firstName
+          lastName: userData.lastName,
+          email: userData.email,
+        },
+        $push: {panels: userData.panels} , // Add to the "panels" array
+      },
       { new: true, runValidators: true, session }
-    ).select('-password'); //to remove password
+    ).select('-password'); // to remove password
 
     console.log(updatedUser);
 
@@ -134,6 +141,7 @@ const usersAddPanel = async (_id, panels) => {
         return {error: 'Panel has existing user'};
       }
     }
+
     //update user, session updates within the method if failure
     const resultUpdateUser = await usersUpdateOne(_id, panels, session);
     if(resultUpdateUser.error){

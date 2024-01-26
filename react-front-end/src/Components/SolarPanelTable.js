@@ -20,13 +20,13 @@ const SolarPanelTable = ({ panels, onUpdatePanel, onDeletePanel }) => {
             </thead>
             <tbody>
                 {panels.map(panel => (
-                    <tr key={panel.id}>
-                        <td>{panel.id}</td>
+                    <tr key={panel._id}>
+                        <td>{panel._id}</td>
                         <td>{panel.longitude}</td>
                         <td>{panel.latitude}</td>
                         <td>
                             <button className='btn btn-primary' onClick={() => onUpdatePanel(panel)}>Update</button>
-                            <button className='btn btn-danger' onClick={() => onDeletePanel(panel)}>Delete</button>
+                            <button className='btn btn-danger' onClick={() => onDeletePanel(panel._id)}>Delete</button>
                         </td>
                     </tr>
                 ))}
