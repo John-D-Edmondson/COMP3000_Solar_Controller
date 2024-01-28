@@ -19,6 +19,7 @@ const Manage = () => {
       try {
         const userData = await userService.userManage();
         // Update the currentUser state with the fetched data
+     
         
         if (userData){
           await setCurrentUser(userData);
@@ -86,11 +87,8 @@ const Manage = () => {
     }
 
     const handleUpdateSolarPanelButton = async (panel) => {
-      console.log(panel);
       await setCurrentPanel(panel);
-      console.log(currentPanel);
       setShowUpdateSolarPanelForm(true);
-      
     }
 
     const handleUpdatePasswordButton = () => {
@@ -99,10 +97,22 @@ const Manage = () => {
     // #endregion
 
     // #region updating/adding data
-    const handleUpdateUserDetails = (formData) => {
+    const handleUpdateUserDetails = async (formData) => {
         console.log(`updating user ${formData.userID}`); // Handle the form data as required
-        setCurrentUser(formData);
+ 
         setShowUpdateDetailsForm(false); // Hide the form after submission
+
+        try {
+          const resultUpdateUser = await userService.userUpdateDetails(formData);
+          console.log(resultUpdateUser.status);
+          console.log(resultUpdateUser.message);
+          if (resultUpdateUser.status === 200) setCurrentUser(formData);
+
+
+        } catch (error) {
+          console.log(`error updating user: ${error}`);
+        }
+
       };
 
     const handleUpdatePanelDetails = async (formData) => {
@@ -140,13 +150,19 @@ const Manage = () => {
       } catch (error){
         console.log(error);
       }
-
-
     }
 
-    const handleUpdatePassword = (formData) => {
+    const handleUpdatePassword = async (formData) => {
       console.log(formData);
-      console.log(`updating password for ${currentUser.userID}, old password ${formData.inputOldPassword}`)
+      formData._id = currentUser._id;
+      console.log(`updating password for ${currentUser._id}, old password ${formData.oldPassword}`)
+      try {
+        const resultPasswordUpdate = await userService.userUpdatePassword(formData)
+        console.log(resultPasswordUpdate);
+
+      } catch (error) {
+        console.log(`error updating password panel: ${error}`);
+      }
     }
 
     const handleDeletePanel = async (panelId) => {
@@ -183,7 +199,7 @@ const Manage = () => {
   return (
     <div>
       {currentUser === null ? (
-      <h2>Error getting data</h2>
+      <h2>Error getting data please try logging in again</h2>
     ) : (
       <>
       <h2>Manage</h2>

@@ -1,9 +1,11 @@
 // Middleware to verify JWT
 require('dotenv').config(); 
 const jwt = require('jsonwebtoken');
+const User = require('../models/userModel');
+const bcrypt = require('bcrypt');
 
 const verifyToken = (req, res, next) => {
-    const token = req.cookies.token; // Assuming you're using cookies
+    const token = req.cookies.token; 
     console.log(`token in request: ${token}`);
     if (!token) {
       return res.status(401).json({ message: 'Unauthorized - No token provided' });
@@ -28,4 +30,23 @@ const verifyCorrectUserId = (req, res, next) => {
     next();
   };
 
-  module.exports = {verifyToken, verifyCorrectUserId};
+const verifyUserPasswordOnUpdate = async (req, res, next) => {
+  const { oldPassword, password } = req.body;
+  if(!password) next();
+  
+  try {
+    // Verify the token
+    const user = await User.findById(req.userId);
+    
+    if (user && await bcrypt.compare(oldPassword, user.password)){
+      next();
+    } else {
+      res.status(401).json({ message: 'Old password incorrect' })
+    }
+   
+  } catch (error) {
+      console.log(error);
+    res.status(401).json({ message: 'Old password incorrect' });
+  }
+};
+  module.exports = {verifyToken, verifyCorrectUserId, verifyUserPasswordOnUpdate};

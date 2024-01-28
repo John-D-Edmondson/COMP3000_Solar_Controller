@@ -79,33 +79,60 @@ const userService = {
       console.log(`error getting user details: ${error.message}`);
     }
   },
-
-//   userUpdateDetails: async (formData) => {
-
-//     try {
-//         const response = await fetch(`${BASE_URL}/users/`, {
-//           method: 'PUT',
-//           headers: {
-//             'Content-Type': 'application/json',
-//           },
-//           body: JSON.stringify(formData),
-//         });
+  userUpdateDetails: async (formData) => {
+    try {
+        const response = await fetch(`${BASE_URL}/users/${formData._id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
   
-//         if (!response.ok) {
-//           // Handle non-successful response (e.g., server error, validation error)
-//           const errorData = await response.json();
+        if (!response.status === 200) {
+          // Handle non-successful response (e.g., server error, validation error)
+          const errorData = await response.json();
   
-//           throw new Error(errorData.message || 'User registration failed');
-//         }
+          throw new Error(errorData.message || 'User update failed');
+        }
   
-//         const userData = await response.json();
-//         return userData;
-//       } catch (error) {
-//         console.error('Error during user registration:', error.message);
-//         throw error;
-//       }
+        const resultUpdateUser = await response.json();
+        console.log(resultUpdateUser);
+        return ({message: resultUpdateUser, status: response.status});
+      } catch (error) {
+        console.error('error updating user', error.message);
+        throw error;
+      }
 
-//   },
+  },
+  userUpdatePassword: async (formData) => {
+    try {
+        const response = await fetch(`${BASE_URL}/users/${formData._id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+          credentials:"include",
+        });
+  
+        if (!response.status === 200) {
+          // Handle non-successful response (e.g., server error, validation error)
+          const errorData = await response.json();
+  
+          throw new Error(errorData.message || 'User update failed');
+        }
+  
+        const resultUpdateUser = await response.json();
+        console.log(resultUpdateUser);
+        return ({message: resultUpdateUser, status: response.status});
+      } catch (error) {
+        console.error('error updating user', error.message);
+        throw error;
+      }
+
+  },
+
 };
 
 export default userService;

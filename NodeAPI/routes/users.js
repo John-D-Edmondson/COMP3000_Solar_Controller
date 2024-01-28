@@ -4,7 +4,7 @@ const User = require('../models/userModel');
 var router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { verifyToken, verifyCorrectUserId } = require('../middleware/authoriseMiddleware');
+const { verifyToken, verifyUserPasswordOnUpdate } = require('../middleware/authoriseMiddleware');
 
 require('dotenv').config(); 
 
@@ -71,7 +71,7 @@ router.post('/', async function(req, res, next){
  });
 
  /* PUT UPDATE USER. */
- router.put('/:id', async function(req, res, next){
+ router.put('/:id', verifyToken, verifyUserPasswordOnUpdate, async function(req, res, next){
   const userId = req.params.id;
   const updatedData = req.body;
   try {
@@ -83,7 +83,7 @@ router.post('/', async function(req, res, next){
     } else if (result.code === 4) {
       res.status(400).send({error: result.message});
     } else {
-      res.status(200).json(result);
+      res.status(200).send(({success: 'User updated'}));
     }
     
   } catch (error) {

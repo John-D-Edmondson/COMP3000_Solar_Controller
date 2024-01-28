@@ -83,6 +83,7 @@ const usersDeleteOne = async (_id) => {
 const usersUpdateOne = async (_id, userData, session) => {
   try {
     console.log(_id);
+    console.log(userData);
     const updatedUser = await User.findOneAndUpdate(
       { _id },
       {
@@ -90,6 +91,7 @@ const usersUpdateOne = async (_id, userData, session) => {
           firstName: userData.firstName, // Update firstName
           lastName: userData.lastName,
           email: userData.email,
+          password: userData.password
         },
         $push: {panels: userData.panels} , // Add to the "panels" array
       },

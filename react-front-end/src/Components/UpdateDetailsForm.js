@@ -3,7 +3,6 @@ import { isAtLeastTwoLetter, isValidEmail } from '../helper/regex';
 
 
 const UpdateDetailsForm = ({ userDetails, onSubmit, onCancel }) => {
-
   const [validFirstName, setValidFirstName] = useState(true);
   const [validLastname, setValidLastName] = useState(true);
   const [validEmail, setValidEmail] = useState(true);
@@ -12,7 +11,7 @@ const UpdateDetailsForm = ({ userDetails, onSubmit, onCancel }) => {
     firstName: userDetails.firstName,
     lastName: userDetails.lastName,
     email: userDetails.email,
-    userID: userDetails.userID
+    _id: userDetails._id
   });
 
   const handleInputChange = (e) => {
@@ -45,6 +44,7 @@ const UpdateDetailsForm = ({ userDetails, onSubmit, onCancel }) => {
     if(!validForm) return;
 
     onSubmit(formData);
+    console.log(formData);
     setFormData({
         firstName:'',
         lastName:'',

@@ -7,9 +7,9 @@ const UpdatePasswordForm = ({onSubmit, onCancel }) => {
 
 
   const [formData, setFormData] = useState({
-    inputOldPassword: '',
-    inputNewPassword: '',
-    inputNewPasswordRetype: ''
+    oldPassword: '',
+    password: '',
+    passwordRetype: ''
   });
 
   const handleInputChange = (e) => {
@@ -22,20 +22,20 @@ const UpdatePasswordForm = ({onSubmit, onCancel }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(!isValidPassword(formData.inputNewPassword)){
+    if(!isValidPassword(formData.password)){
         setValidPassword(false);
         
     }
-    if(formData.inputNewPassword !== formData.inputNewPasswordRetype) {
+    if(formData.inputNewPassword !== formData.passwordRetype) {
         setValidMatchPassword(false);
 
     }
 
-    if(!isValidPassword(formData.inputNewPassword) || formData.inputNewPassword !== formData.inputNewPasswordRetype){
+    if(!isValidPassword(formData.password) || formData.password !== formData.passwordRetype){
         setFormData({
-            inputOldPassword: '',
-            inputNewPassword: '',
-            inputNewPasswordRetype: ''
+            oldPassword: '',
+            password: '',
+            passwordRetype: ''
         });
         return;
     }
@@ -48,9 +48,9 @@ const UpdatePasswordForm = ({onSubmit, onCancel }) => {
 
   const handleCancel = () => {
     setFormData({
-        inputOldPassword: '',
-        inputNewPassword: '',
-        inputNewPasswordRetype: ''
+        oldPassword: '',
+        password: '',
+        passwordRetype: ''
     });
     onCancel();
   };
@@ -61,42 +61,42 @@ const UpdatePasswordForm = ({onSubmit, onCancel }) => {
         <div className="form-label-group">
         <input 
           type="password" 
-          id="inputOldPassword" 
+          id="oldPassword" 
           className="form-control" 
           placeholder="Old Password" 
           required autoFocus
-          name='inputOldPassword'
-          value={formData.inputOldPassword}
+          name='oldPassword'
+          value={formData.oldPassword}
           onChange={handleInputChange}
           />
-        <label htmlFor="inputOldPassword">Old Password</label>
+        <label htmlFor="oldPassword">Old Password</label>
       </div>
       <div className="form-label-group">
         <input 
           type="password" 
-          id="inputNewPassword" 
+          id="password" 
           className="form-control" 
           placeholder="New Password" 
           required
-          name='inputNewPassword'
-          value={formData.inputNewPassword}
+          name='password'
+          value={formData.password}
           onChange={handleInputChange}
           />
-        <label htmlFor="inputNewPassword">New Password</label>
+        <label htmlFor="password">New Password</label>
         {!validPassword && <p style={{ color: 'red' }}>Must be 8 characters and include capital and number.</p>}
       </div>
       <div className="form-label-group">
         <input 
           type="password" 
-          id="inputNewPasswordRetype" 
+          id="passwordRetype" 
           className="form-control" 
           placeholder="Retype New Password" 
           required
-          name='inputNewPasswordRetype'
-          value={formData.inputNewPasswordRetype}
+          name='passwordRetype'
+          value={formData.passwordRetype}
           onChange={handleInputChange}
           />
-        <label htmlFor="inputNewPasswordRetype">Retype New Password</label>
+        <label htmlFor="passwordRetype">Retype New Password</label>
         {!validMatchPassword && <p style={{ color: 'red' }}>Passwords must match</p>}
       </div>
       <button className="btn btn-primary" type="submit">Update</button>
