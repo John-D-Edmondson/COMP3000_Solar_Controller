@@ -8,15 +8,16 @@ const SolarPanelSchema = new mongoose.Schema({
   customerID: Number
 });
 
-const SolarPanel = mongoose.model('SolarPanel', SolarPanelSchema);
+const Panel = mongoose.model('Panel', SolarPanelSchema);
 
 // Function to retrieve solar panel data by API key
 const getSolarPanelByApiKey = async (apiKey) => {
-  return SolarPanel.findOne({ apiKey });
+  console.log(apiKey);
+  return Panel.findOne({ apiKey });
 };
 
 module.exports = {
-  SolarPanel,
+  Panel,
   getSolarPanelByApiKey,
 };
 
