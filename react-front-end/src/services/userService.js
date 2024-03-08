@@ -28,6 +28,7 @@ const userService = {
     }
   },
   userLogin: async (formData) => {
+    console.log(formData);
     try {
       const response = await fetch(`${BASE_URL}/users/login`, {
         method: 'POST',

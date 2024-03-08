@@ -13,7 +13,7 @@ const verifyToken = (req, res, next) => {
   
     try {
       // Verify the token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, "Qq123456");
       req.userId = decoded.userId; // Attach the user ID to the request for further use
       next();
     } catch (error) {

@@ -152,15 +152,19 @@ router.put('/removepanel/:id', async function(req, res, next){
 
 router.post('/login', async function(req, res, next) {
   const { email, password } = req.body;
+  console.log("entering login");
+
   // Find user by email
   try {
     const user = await User.findOne({ 'email': email });
-
+    const passwordMatch = await bcrypt.compare(password, user.password);
       // Check if user exists and password is correct
-    if (user && await bcrypt.compare(password, user.password)) {
+    if (user && passwordMatch) {
       // Generate a JWT
+      console.log("user found and password matches");
       console.log(process.env.JWT_SECRET);
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+      const token = jwt.sign({ userId: user._id }, "Qq123456", { expiresIn: '1h' });
       console.log(token);
 
       res.cookie('token', token, { httpOnly: true });
